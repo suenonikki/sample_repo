@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine's Day Proposal</title>
+<style>
+  body {
+    background: pink;
+    text-align: center;
+    font-family: "Comic Sans MS", cursive;
+    overflow: hidden;
+  }
+  h1 {
+    color: red;
+    font-size: 48px;
+    margin-top: 50px;
+  }
+  #message {
+    font-size: 28px;
+    color: blue;
+    margin: 20px;
+  }
+  #countdown {
+    font-size: 36px;
+    color: purple;
+    margin-top: 30px;
+  }
+  button {
+    font-size: 24px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+  }
+  #yes {
+    background: lightgreen;
+    left: 200px;
+    top: 400px;
+  }
+  #no {
+    background: lightcoral;
+    left: 600px;
+    top: 400px;
+  }
+  .heart, .flower {
+    position: absolute;
+    font-size: 24px;
+    animation: fall 5s linear infinite;
+  }
+  @keyframes fall {
+    from { top: -50px; }
+    to { top: 100vh; }
+  }
+</style>
+</head>
+<body>
+  <h1>Will you be my Valentine?</h1>
+  <div id="message"></div>
+  <div id="countdown"></div>
+  <button id="yes">Yes 💖</button>
+  <button id="no">No 💔</button>
+
+<script>
+let noClickCount = 0;
+let yesSize = 24;
+const teasingMessages = [
+  "Why no? 😢",
+  "You don’t love me anymore? 💔",
+  "Come on… say yes! 🥺",
+  "But I bought chocolates already 🍫",
+  "Don’t break my heart 💘",
+  "Di mo na ba ako mahal?",
+  "Wala kang bebetime!!!",
+  "Luh bat ngay?",
+  "KUPAL MAG YES KA NA AH!!!",
+  "LUV NAMAN HUHUHU"
+];
+
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const message = document.getElementById("message");
+const countdown = document.getElementById("countdown");
+
+yesBtn.onclick = () => {
+  message.textContent = "I LOVE YOU SO MUCH MWA MWA! ❤️❤️❤️";
+  spawnHearts();
+  startCountdown(10);
+};
+
+noBtn.onclick = () => {
+  if (noClickCount < teasingMessages.length) {
+    message.textContent = teasingMessages[noClickCount];
+  } else {
+    message.textContent = "You’re really pressing No… 💔";
+  }
+  noClickCount++;
+
+  if (noClickCount >= 8) {
+    yesSize += 5;
+    yesBtn.style.fontSize = yesSize + "px";
+    yesBtn.style.background = ["pink","red","purple","magenta"][noClickCount % 4];
+  }
+
+  // Move No button randomly
+  noBtn.style.left = Math.random() * (window.innerWidth - 150) + "px";
+  noBtn.style.top = Math.random() * (window.innerHeight - 100) + "px";
+};
+
+function spawnHearts() {
+  for (let i = 0; i < 20; i++) {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = ["❤️","💖","💕","💘","💞"][Math.floor(Math.random()*5)];
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.top = "-50px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+  }
+}
+
+function spawnFlowers() {
+  for (let i = 0; i < 30; i++) {
+    let flower = document.createElement("div");
+    flower.className = "flower";
+    flower.textContent = ["🌸","🌹","🌼","🌻","💐"][Math.floor(Math.random()*5)];
+    flower.style.left = Math.random() * window.innerWidth + "px";
+    flower.style.top = "-50px";
+    document.body.appendChild(flower);
+    setTimeout(() => flower.remove(), 5000);
+  }
+}
+
+function startCountdown(seconds) {
+  let timeLeft = seconds;
+  function tick() {
+    countdown.textContent = "Closing in " + timeLeft + " seconds...";
+    if (timeLeft === 5) {
+      message.textContent = "YEYEYEY!! I LOVE YOU SO MUCH 💖💐";
+      spawnFlowers();
+    }
+    if (timeLeft === 0) {
+      countdown.textContent = "Goodbye 💖";
+      // Try to close window (may be blocked on mobile)
+      window.close();
+      // Fallback: redirect to a blank page
+      window.location.href = "about:blank";
+    } else {
+      timeLeft--;
+      setTimeout(tick, 1000);
+    }
+  }
+  tick();
+}
+</script>
+</body>
+</html>
